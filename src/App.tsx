@@ -1,11 +1,26 @@
-import { Flex, NumberInput, NumberInputField, Spacer, Text } from '@chakra-ui/react';
+import { Button, Flex, NumberInput, NumberInputField, Text, useToast } from '@chakra-ui/react';
 import React, { useState } from 'react';
 
+interface Radius {
+  topLeft: string;
+  topRight: string;
+  bottomLeft: string;
+  bottomRight: string;
+}
+
 function App() {
-  const [topLeftRadius, setTopLeftRadius] = useState('');
-  // const [topRightRadius, setTopRightRadius] = useState('');
-  // const [bottomLeftRadius, setbottomLeftRadius] = useState('');
-  // const [bottomRightRadius, setbottomRightRadius] = useState('');
+  const [radius, setRadius] = useState<Radius>({
+    topLeft: '',
+    topRight: '',
+    bottomLeft: '',
+    bottomRight: '',
+  });
+
+  const toast = useToast();
+
+  const onReset = () => {
+    setRadius({ ...radius, topLeft: '', topRight: '', bottomLeft: '', bottomRight: '' });
+  };
 
   return (
     <Flex
@@ -15,37 +30,95 @@ function App() {
       minHeight="100vh"
       justifyContent="center"
     >
-      <NumberInput>
-        <NumberInputField
-          w={50}
+      <Flex>
+        <NumberInput
+          w={75}
           mr={300}
-          bgColor="white"
-          onChange={(e) => {
-            setTopLeftRadius(e.target.value);
-            console.log(e.target.value);
+          value={radius.topLeft}
+          onChange={(value) => {
+            if (value.match(/^[0-9]*$/)) {
+              setRadius({ ...radius, topLeft: value });
+            } else {
+              toast({
+                title: 'Please enter only numbers from 0-9 up to a maximum of 3 digits',
+                duration: 2000,
+              });
+            }
           }}
-        />
-        <NumberInputField w={50} ml={300} bgColor="white" />
-      </NumberInput>
+        >
+          <NumberInputField maxLength={3} bgColor="white" />
+        </NumberInput>
+        <NumberInput
+          w={75}
+          ml={300}
+          value={radius.topRight}
+          onChange={(value) => {
+            if (value.match(/^[0-9]*$/)) {
+              setRadius({ ...radius, topRight: value });
+            } else {
+              toast({
+                title: 'Please enter only numbers from 0-9 up to a maximum of 3 digits',
+                duration: 2000,
+              });
+            }
+          }}
+        >
+          <NumberInputField maxLength={3} bgColor="white" />
+        </NumberInput>
+      </Flex>
       <Flex
         bg="turquoise"
         h={600}
         w={600}
+        flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        borderTopLeftRadius={topLeftRadius}
-        borderTopRightRadius={10}
-        borderBottomLeftRadius={15}
-        borderBottomRightRadius={20}
+        borderTopLeftRadius={parseInt(radius.topLeft)}
+        borderTopRightRadius={parseInt(radius.topRight)}
+        borderBottomLeftRadius={parseInt(radius.bottomLeft)}
+        borderBottomRightRadius={parseInt(radius.bottomRight)}
       >
         <Text fontWeight="bold" fontSize="5xl" color="white">
           Border Radius Previewer
         </Text>
+        <Button onClick={onReset}>Reset</Button>
       </Flex>
-      <NumberInput>
-        <NumberInputField w={50} mr={300} bgColor="white" />
-        <NumberInputField w={50} ml={300} bgColor="white" />
-      </NumberInput>
+      <Flex>
+        <NumberInput
+          w={75}
+          mr={300}
+          value={radius.bottomLeft}
+          onChange={(value) => {
+            if (value.match(/^[0-9]*$/)) {
+              setRadius({ ...radius, bottomLeft: value });
+            } else {
+              toast({
+                title: 'Please enter only numbers from 0-9 up to a maximum of 3 digits',
+                duration: 2000,
+              });
+            }
+          }}
+        >
+          <NumberInputField maxLength={3} bgColor="white" />
+        </NumberInput>
+        <NumberInput
+          w={75}
+          ml={300}
+          value={radius.bottomRight}
+          onChange={(value) => {
+            if (value.match(/^[0-9]*$/)) {
+              setRadius({ ...radius, bottomRight: value });
+            } else {
+              toast({
+                title: 'Please enter only numbers from 0-9 up to a maximum of 3 digits',
+                duration: 2000,
+              });
+            }
+          }}
+        >
+          <NumberInputField maxLength={3} bgColor="white" />
+        </NumberInput>
+      </Flex>
     </Flex>
   );
 }
