@@ -18,8 +18,19 @@ function App() {
 
   const toast = useToast();
 
+  const onChange = (value: string, onValidated: (currRadius: Radius) => void) => {
+    if (value.match(/^[0-9]*$/)) {
+      onValidated(radius);
+    } else {
+      toast({
+        title: 'Please enter only numbers from 0-9 up to a maximum of 3 digits',
+        duration: 2000,
+      });
+    }
+  };
+
   const onReset = () => {
-    setRadius({ ...radius, topLeft: '', topRight: '', bottomLeft: '', bottomRight: '' });
+    setRadius({ topLeft: '', topRight: '', bottomLeft: '', bottomRight: '' });
   };
 
   return (
@@ -35,16 +46,11 @@ function App() {
           w={75}
           mr={300}
           value={radius.topLeft}
-          onChange={(value) => {
-            if (value.match(/^[0-9]*$/)) {
-              setRadius({ ...radius, topLeft: value });
-            } else {
-              toast({
-                title: 'Please enter only numbers from 0-9 up to a maximum of 3 digits',
-                duration: 2000,
-              });
-            }
-          }}
+          onChange={(value) =>
+            onChange(value, (currRadius) => {
+              setRadius({ ...currRadius, topLeft: value });
+            })
+          }
         >
           <NumberInputField maxLength={3} bgColor="white" />
         </NumberInput>
@@ -52,16 +58,11 @@ function App() {
           w={75}
           ml={300}
           value={radius.topRight}
-          onChange={(value) => {
-            if (value.match(/^[0-9]*$/)) {
-              setRadius({ ...radius, topRight: value });
-            } else {
-              toast({
-                title: 'Please enter only numbers from 0-9 up to a maximum of 3 digits',
-                duration: 2000,
-              });
-            }
-          }}
+          onChange={(value) =>
+            onChange(value, (currRadius) => {
+              setRadius({ ...currRadius, topRight: value });
+            })
+          }
         >
           <NumberInputField maxLength={3} bgColor="white" />
         </NumberInput>
@@ -88,16 +89,11 @@ function App() {
           w={75}
           mr={300}
           value={radius.bottomLeft}
-          onChange={(value) => {
-            if (value.match(/^[0-9]*$/)) {
-              setRadius({ ...radius, bottomLeft: value });
-            } else {
-              toast({
-                title: 'Please enter only numbers from 0-9 up to a maximum of 3 digits',
-                duration: 2000,
-              });
-            }
-          }}
+          onChange={(value) =>
+            onChange(value, (currRadius) => {
+              setRadius({ ...currRadius, bottomLeft: value });
+            })
+          }
         >
           <NumberInputField maxLength={3} bgColor="white" />
         </NumberInput>
@@ -105,16 +101,11 @@ function App() {
           w={75}
           ml={300}
           value={radius.bottomRight}
-          onChange={(value) => {
-            if (value.match(/^[0-9]*$/)) {
-              setRadius({ ...radius, bottomRight: value });
-            } else {
-              toast({
-                title: 'Please enter only numbers from 0-9 up to a maximum of 3 digits',
-                duration: 2000,
-              });
-            }
-          }}
+          onChange={(value) =>
+            onChange(value, (currRadius) => {
+              setRadius({ ...currRadius, bottomRight: value });
+            })
+          }
         >
           <NumberInputField maxLength={3} bgColor="white" />
         </NumberInput>
